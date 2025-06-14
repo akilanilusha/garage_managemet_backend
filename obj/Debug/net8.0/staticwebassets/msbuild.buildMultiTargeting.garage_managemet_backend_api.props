@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/garage_managemet_backend_api.props" />
+</Project>

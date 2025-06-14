@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "1PspEGQBS010vFqk/ipu1NsaCcK0yUdG5FbkXRJCvTA=",
+  "Source": "garage_managemet_backend_api",
+  "BasePath": "_content/garage_managemet_backend_api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,6 @@
+@garage_managemet_backend_api_HostAddress = http://localhost:5141
+
+GET {{garage_managemet_backend_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
