@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64ebbb8c210e2e91fda5e0f7dfe1d5d66b53851c")]
 [assembly: System.Reflection.AssemblyProductAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
