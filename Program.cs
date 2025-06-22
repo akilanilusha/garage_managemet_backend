@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DB connection (Azure SQL or local)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MariaDbServerVersion(new Version(10, 4, 14))  // Note: MariaDB version
+    ));
+    
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<TokenService>();
