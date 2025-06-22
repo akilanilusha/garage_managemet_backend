@@ -1,4 +1,3 @@
-// Program.cs
 using System.Text;
 using garage_managemet_backend_api.Data;
 using garage_managemet_backend_api.Services;
