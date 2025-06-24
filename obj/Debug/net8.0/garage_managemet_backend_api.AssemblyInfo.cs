@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c814784e8ebc06a2cb26f1ff1f97abea6736f85")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc9ef97c650ca6f844f8b51eb8159e1536e4564d")]
 [assembly: System.Reflection.AssemblyProductAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("garage_managemet_backend_api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

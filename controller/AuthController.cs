@@ -10,7 +10,7 @@ using garage_managemet_backend_api.Models;
 namespace garage_managemet_backend_api.controller;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]")] //http://localhost:5141/api/auth
 public class AuthController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
         _tokenService = tokenService;
     }
 
-    [HttpPost("login")]
+    [HttpPost("login")]//http://localhost:5141/api/auth/login
     public IActionResult Login([FromBody] LoginRequest request)
     {
         var user = _context.Users.SingleOrDefault(u => u.UserName == request.UserName);
