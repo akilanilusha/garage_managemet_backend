@@ -4,15 +4,18 @@ using garage_managemet_backend_api.Data;
 using garage_managemet_backend_api.Services;
 using garage_managemet_backend_api.Models;
 using Microsoft.EntityFrameworkCore;
-using garage_managemet_backend_api.controller.Services.Auth;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace garage_managemet_backend_api.controller;
-{
-	public class AppointmentController : ControllerBase 
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+
+public class AppointmentController : ControllerBase 
 	{
-		[Route("api/[controller]")]
-		[ApiController]
-		[Authorize]
+		
 
 		private readonly AppDbContext _context;
 	
@@ -22,7 +25,7 @@ namespace garage_managemet_backend_api.controller;
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<AppointmentController>>> GetAppointment()
+		public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointment()
 		{
 				var appointments = await _context.Appointments.ToListAsync();
 				return (appointments);
@@ -76,18 +79,25 @@ namespace garage_managemet_backend_api.controller;
 			}
 			return NoContent();
     }
-	[HttpDelete("{id}")]
-	public async  Task<IActionResult> DeleteAppointment(int id)
-	{
-		var appointmnet = awit _context.Appointments.FindAsync(id);
-		if(appointmnet == null)
-		{
-			return NotFound();
-        }
-		_context.Appoinmnets.Remove(appointmnet);
-		await _context.SaveChangesAsync();
-		return Ok(new { deleteAppointmentId = AppointmentController.Id });
+    //[HttpDelete("{id}")]
+    //public async  Task<IActionResult> DeleteAppointment(int id)
+    //{
+    //	var appointmnet = awit _context.Appointments.FindAsync(id);
+    //	if(appointmnet == null)
+    //	{
+    //		return NotFound();
+    //       }
+    //	_context.Appoinmnets.Remove(appointmnet);
+    //	await _context.SaveChangesAsync();
+    //	return Ok(new { deleteAppointmentId = AppointmentController.Id });
+    //   }
+
+    private bool AppointmentExists(int id)
+    {
+        return _context.Appointments.Any(e => e.Id == id);
     }
-}
+
+
+
 }
 

@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.idea",
+    "\\controller",
     "\\Models"
   ],
   "SelectedNode": "\\Models\\Appointment.cs",
