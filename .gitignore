@@ -4,3 +4,5 @@ obj/
 appsettings*.json
 .env
 Migrations/
+.vs/
+Program.cs
