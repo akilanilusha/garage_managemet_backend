@@ -21,7 +21,6 @@ public class AuthController : ControllerBase
         _context = context;
         _tokenService = tokenService;
     }
-
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
