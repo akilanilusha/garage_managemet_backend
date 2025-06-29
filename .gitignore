@@ -1,6 +1,8 @@
 bin/
 obj/
 .vscode/
-appsettings.*.json
+appsettings*.json
 .env
+Migrations/
 .vs/
+Program.cs

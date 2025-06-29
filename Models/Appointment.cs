@@ -1,25 +1,30 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace garage_managemet_backend_api.Models;
+[Table("Appointment")]
+    public class Appointment
+    {
+        [Key]
+        [Column("AppointmentID")]
+        public int Id { get; set; }
 
+        [Required]
+        public string CustomerID { get; set; }
 
-public class Appointment
-	{
-		
-		public int Id { get; set; }
-		public string CustomerName { get; set; }
-		public string Vehicle { get; set; }
-		public DateTime Date { get; set; }
-		public string Mechanic { get; set; }
-		public string Status { get; set; }
-	
-	}
+        [Required]
+        public string VehicleID { get; set; }
 
-	//public enum AppointmentStatus
-	//{
-	//	Pending=1,
-	//	Confirmed=2,
-	//	Completed=3,
-	//	Cancelled=4
-	//}
+        [Required]
+        public DateOnly Date { get; set; }
 
+        [Required]
+        public TimeOnly Time { get; set; }
+
+        [Required]
+        public string ServiceType { get; set; }
+
+        public string? Description { get; set; }
+
+        [Required]
+        public string Status { get; set; }
+    }

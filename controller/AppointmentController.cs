@@ -27,14 +27,14 @@ public class AppointmentController : ControllerBase
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointment()
 		{
-				var appointments = await _context.Appointments.ToListAsync();
+				var appointments = await _context.Appointment.ToListAsync();
 				return (appointments);
 		}
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Appointment>> GetAppointment(int id)
 		{
-			var appointment = await _context.Appointments.FindAsync(id);
+			var appointment = await _context.Appointment.FindAsync(id);
 			if (appointment == null)
 			{
 				return NotFound();
@@ -49,7 +49,7 @@ public class AppointmentController : ControllerBase
 			{
 				return BadRequest(ModelState);
 			}
-			_context.Appointments.Add(appointment);
+			_context.Appointment.Add(appointment);
 			await _context.SaveChangesAsync();
 			return CreatedAtAction(nameof(GetAppointment), new { id = appointment.Id }, appointment);
 		}
@@ -82,7 +82,7 @@ public class AppointmentController : ControllerBase
     //[HttpDelete("{id}")]
     //public async  Task<IActionResult> DeleteAppointment(int id)
     //{
-    //	var appointmnet = awit _context.Appointments.FindAsync(id);
+    //	var appointmnet = awit _context.Appointment.FindAsync(id);
     //	if(appointmnet == null)
     //	{
     //		return NotFound();
@@ -94,7 +94,7 @@ public class AppointmentController : ControllerBase
 
     private bool AppointmentExists(int id)
     {
-        return _context.Appointments.Any(e => e.Id == id);
+        return _context.Appointment.Any(e => e.Id == id);
     }
 
 

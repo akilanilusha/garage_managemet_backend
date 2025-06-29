@@ -12,10 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MariaDbServerVersion(new Version(10,4,32))
-    )
-);
-
+        new MariaDbServerVersion(new Version(10, 4, 14))  // Note: MariaDB version
+    ));
+    
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<TokenService>();

@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/garage_managemet_backend_api.props" />
-</Project>
