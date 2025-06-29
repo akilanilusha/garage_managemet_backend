@@ -3,6 +3,8 @@ using garage_managemet_backend_api.Data;
 using garage_managemet_backend_api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
