@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // DB connection (Azure SQL or local)
@@ -14,11 +13,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MariaDbServerVersion(new Version(10, 4, 14))  // Note: MariaDB version
     ));
-    
+
+// Add controllers
 builder.Services.AddControllers();
 
+// Add Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Dependency injection
 builder.Services.AddScoped<TokenService>();
 
+// JWT Authentication
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -36,6 +42,12 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+// Enable Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// Middleware
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
