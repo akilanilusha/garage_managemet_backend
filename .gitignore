@@ -1,8 +1,25 @@
+# Build artifacts
 bin/
 obj/
+
+# User-specific settings
 .vscode/
-appsettings*.json
-.env
-Migrations/
 .vs/
-Program.cs
+.idea/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Optional: only ignore local secrets, not all configs
+appsettings.Development.json
+appsettings.*.local.json
+
+# Entity Framework migrations (only if you're recreating every time)
+# Migrations/
+
+# OS-specific
+.DS_Store
+Thumbs.db
