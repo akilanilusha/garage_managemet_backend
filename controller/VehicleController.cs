@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using garage_managemet_backend_api.Models;
 using Microsoft.EntityFrameworkCore;
+using garage_managemet_backend_api.Models.VehicleManagement;
 
 namespace garage_managemet_backend_api.controller
 {
@@ -21,75 +22,119 @@ namespace garage_managemet_backend_api.controller
 
         // GET: api/vehicle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
+
+        public async Task<ActionResult<IEnumerable<VehicleReciveDTO>>> GetVehicles()
         {
-            return await _context.Vehicles.ToListAsync();
+            var vehicles = await _context.Vehicles
+                                         .Where(v => v.IsDelete == false)
+                                         .Select(v => new VehicleReciveDTO(
+                                             v.Id,
+                                             v.LicensePlate,
+                                             v.Make,
+                                             v.Model,
+                                             v.Year,
+                                             v.CustomerID
+                                         ))
+                                         .ToListAsync();
+
+            return Ok(vehicles);
         }
 
         // GET: api/vehicle/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Vehicle>> GetVehicle(int id)
+        public async Task<ActionResult<VehicleReciveDTO>> GetVehicle(int id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
+            var vehicle = await _context.Vehicles
+                                        .Where(v => v.Id == id && v.IsDelete == false)
+                                        .Select(v => new VehicleReciveDTO(
+                                            v.Id,
+                                            v.LicensePlate,
+                                            v.Make,
+                                            v.Model,
+                                            v.Year,
+                                            v.CustomerID
+                                        ))
+                                        .FirstOrDefaultAsync();
 
             if (vehicle == null)
                 return NotFound();
 
-            return vehicle;
+            return Ok(vehicle);
         }
 
         // POST: api/vehicle
         [HttpPost]
-        public async Task<ActionResult<Vehicle>> CreateVehicle(Vehicle vehicle)
+        public async Task<ActionResult<VehicleAddUpdateDTO>> CreateVehicle(VehicleAddUpdateDTO vehicleDto)
         {
+            var existingVehicle = await _context.Vehicles
+                                                .Where(v => v.LicensePlate == vehicleDto.LicensePlate && v.IsDelete == false)
+                                                .FirstOrDefaultAsync();
+
+            if (existingVehicle != null)
+            {
+                return Conflict($"A vehicle with LicensePlate '{vehicleDto.LicensePlate}' already exists and is active.");
+            }
+
+            var customer = await _context.Customer.FindAsync(vehicleDto.CustomerID);
+            if (customer == null)
+            {
+                return NotFound($"Customer with ID {vehicleDto.CustomerID} not found.");
+            }
+            var vehicle = new Vehicle
+            {
+                LicensePlate = vehicleDto.LicensePlate,
+                Make = vehicleDto.Make,
+                Model = vehicleDto.Model,
+                Year = vehicleDto.Year,
+                CustomerID = vehicleDto.CustomerID
+            };
+
             _context.Vehicles.Add(vehicle);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetVehicle), new { id = vehicle.Id }, vehicle);
+            return Ok(vehicle);
+
         }
 
         // PUT: api/vehicle/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id, Vehicle vehicle)
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] VehicleAddUpdateDTO dto)
         {
-            if (id != vehicle.Id)
-                return BadRequest();
+            var vehicle = await _context.Vehicles.FindAsync(id);
 
-            _context.Entry(vehicle).State = EntityState.Modified;
+            if (vehicle == null)
+                return NotFound($"Vehicle with ID {id} not found.");
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VehicleExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
+            var customerExists = await _context.Customer.AnyAsync(c => c.CustomerID == dto.CustomerID);
+            if (!customerExists)
+                return NotFound($"Customer with ID {dto.CustomerID} not found.");
 
-            return Ok(new { updatedVehicleId = vehicle.Id });
+            // Update the existing vehicle
+            vehicle.LicensePlate = dto.LicensePlate;
+            vehicle.Make = dto.Make;
+            vehicle.Model = dto.Model;
+            vehicle.Year = dto.Year;
+            vehicle.CustomerID = dto.CustomerID;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(vehicle);
         }
 
-        // DELETE: api/vehicle/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle(int id)
+
+        // DELETE: api/vehicle/{id}/delete
+        [HttpPatch("{id}/delete")]
+        public async Task<IActionResult> DeleteVehicle(int id, [FromBody] VehicleDeleteDTO dto)
         {
             var vehicle = await _context.Vehicles.FindAsync(id);
             if (vehicle == null)
                 return NotFound();
 
-            _context.Vehicles.Remove(vehicle);
+            vehicle.IsDelete = dto.IsDelete;
             await _context.SaveChangesAsync();
 
-            return Ok(new { deleteVehicleId = vehicle.Id });
+            return Ok(new { deletedVehicleId = vehicle.Id });
         }
 
-        // Helper method
-        private bool VehicleExists(int id)
-        {
-            return _context.Vehicles.Any(e => e.Id == id);
-        }
     }
 }

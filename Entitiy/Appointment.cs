@@ -9,10 +9,10 @@ using System.ComponentModel.DataAnnotations.Schema;
         public int Id { get; set; }
 
         [Required]
-        public string CustomerID { get; set; }
+        public int CustomerID { get; set; }
 
         [Required]
-        public string VehicleID { get; set; }
+        public int VehicleID { get; set; }
 
         [Required]
         public DateOnly Date { get; set; }
