@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 24, 2025 at 09:49 PM
+-- Generation Time: Jul 02, 2025 at 04:03 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -149,6 +149,17 @@ CREATE TABLE `Supplier` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Supplier_has_Item`
+--
+
+CREATE TABLE `Supplier_has_Item` (
+  `Supplier_SupplierID` int(10) UNSIGNED NOT NULL,
+  `Item_ItemID` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Users`
 --
 
@@ -262,6 +273,14 @@ ALTER TABLE `Supplier`
   ADD PRIMARY KEY (`SupplierID`);
 
 --
+-- Indexes for table `Supplier_has_Item`
+--
+ALTER TABLE `Supplier_has_Item`
+  ADD PRIMARY KEY (`Supplier_SupplierID`,`Item_ItemID`),
+  ADD KEY `fk_Supplier_has_Item_Item1_idx` (`Item_ItemID`),
+  ADD KEY `fk_Supplier_has_Item_Supplier1_idx` (`Supplier_SupplierID`);
+
+--
 -- Indexes for table `Users`
 --
 ALTER TABLE `Users`
@@ -288,7 +307,7 @@ ALTER TABLE `__EFMigrationsHistory`
 -- AUTO_INCREMENT for table `Appointment`
 --
 ALTER TABLE `Appointment`
-  MODIFY `AppointmentID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `AppointmentID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Customer`
@@ -374,6 +393,13 @@ ALTER TABLE `Service_Record`
   ADD CONSTRAINT `fk_Service_Appointment` FOREIGN KEY (`AppointmentID`) REFERENCES `Appointment` (`AppointmentID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_Service_Mechanic` FOREIGN KEY (`MechanicID`) REFERENCES `Mechanic` (`MechanicID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_Service_Vehicle` FOREIGN KEY (`VehicleID`) REFERENCES `Vehicles` (`VehicleID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Supplier_has_Item`
+--
+ALTER TABLE `Supplier_has_Item`
+  ADD CONSTRAINT `fk_Supplier_has_Item_Item1` FOREIGN KEY (`Item_ItemID`) REFERENCES `Item` (`ItemID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_Supplier_has_Item_Supplier1` FOREIGN KEY (`Supplier_SupplierID`) REFERENCES `Supplier` (`SupplierID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `Vehicles`
