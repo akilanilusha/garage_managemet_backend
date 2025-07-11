@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using garage_managemet_backend_api.Data;
-using garage_managemet_backend_api.Entitiy;
+using garage_managemet_backend_api.Models;
 using garage_managemet_backend_api.Models.CustomerManagement;
 
-namespace garage_managemet_backend_api.controller
+namespace garage_managemet_backend_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -24,13 +24,13 @@ namespace garage_managemet_backend_api.controller
         public async Task<ActionResult<IEnumerable<CustomerReceiveDTO>>> GetCustomers()
         {
             var customers = await _context.Customer
-                .Select(c => new CustomerReceiveDTO
-                {
-                    CustomerID = c.CustomerID,
-                    Name = c.name,
-                    Phone = c.phone,
-                    Email = c.email
-                })
+                .Where(c => c.IsDelete == false)
+                .Select(c => new CustomerReceiveDTO(
+                    c.Id,
+                    c.Name,
+                    c.Email,
+                    c.ContactInfo
+                ))
                 .ToListAsync();
 
             return Ok(customers);
@@ -41,14 +41,13 @@ namespace garage_managemet_backend_api.controller
         public async Task<ActionResult<CustomerReceiveDTO>> GetCustomer(int id)
         {
             var customer = await _context.Customer
-                .Where(c => c.CustomerID == id)
-                .Select(c => new CustomerReceiveDTO
-                {
-                    CustomerID = c.CustomerID,
-                    Name = c.name,
-                    Phone = c.phone,
-                    Email = c.email
-                })
+                .Where(c => c.Id == id && !c.IsDelete)
+                .Select(c => new CustomerReceiveDTO(
+                    c.Id,
+                    c.Name,
+                    c.Email,
+                    c.ContactInfo
+                ))
                 .FirstOrDefaultAsync();
 
             if (customer == null)
@@ -59,16 +58,14 @@ namespace garage_managemet_backend_api.controller
 
         // POST: api/customer
         [HttpPost]
-        public async Task<ActionResult> CreateCustomer([FromBody] CustomerAddUpdateDTO dto)
+        public async Task<ActionResult<CustomerAddUpdateDTO>> CreateCustomer(CustomerAddUpdateDTO dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var customer = new Customer
             {
-                name = dto.Name,
-                phone = dto.Phone,
-                email = dto.Email
+                Name = dto.Name,
+                Email = dto.Email,
+                ContactInfo = dto.ContactInfo,
+                IsDelete = false
             };
 
             _context.Customer.Add(customer);
@@ -79,33 +76,35 @@ namespace garage_managemet_backend_api.controller
 
         // PUT: api/customer/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerAddUpdateDTO dto)
+        public async Task<IActionResult> UpdateCustomer(int id, CustomerAddUpdateDTO dto)
         {
             var customer = await _context.Customer.FindAsync(id);
-            if (customer == null)
-                return NotFound($"Customer with ID {id} not found.");
 
-            customer.name = dto.Name;
-            customer.phone = dto.Phone;
-            customer.email = dto.Email;
+            if (customer == null || customer.IsDelete)
+                return NotFound();
+
+            customer.Name = dto.Name;
+            customer.Email = dto.Email;
+            customer.ContactInfo = dto.ContactInfo;
 
             await _context.SaveChangesAsync();
 
             return Ok(customer);
         }
 
-        // DELETE: api/customer/{id}
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer(int id)
+        // PATCH: api/customer/{id}/delete
+        [HttpPatch("{id}/delete")]
+        public async Task<IActionResult> DeleteCustomer(int id, [FromBody] CustomerDeleteDTO dto)
         {
             var customer = await _context.Customer.FindAsync(id);
+
             if (customer == null)
                 return NotFound();
 
-            _context.Customer.Remove(customer);
+            customer.IsDelete = dto.IsDelete;
             await _context.SaveChangesAsync();
 
-            return Ok(new { deletedCustomerId = id });
+            return Ok(new { deletedCustomerId = customer.Id });
         }
     }
 }

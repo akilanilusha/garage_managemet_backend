@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace garage_managemet_backend_api.Models;
+//namespace garage_managemet_backend_api.Models;
 
 [Table("Vehicles")]
 public class Vehicle
