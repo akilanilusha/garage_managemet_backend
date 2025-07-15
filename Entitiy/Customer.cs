@@ -1,13 +1,29 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace garage_managemet_backend_api.Entitiy;
+namespace garage_managemet_backend_api.Models;
 
-[Table("Customer")]
+[Table("customer")]
 public class Customer
 {
+    [Key]
+    [Column("CustomerID")]
     public int CustomerID { get; set; }
-    public required string name { get; set; }
-    public required string phone { get; set; }
-    public required string email { get; set; }
+
+    [Required]
+    [Column("name")]
+    public string Name { get; set; }
+
+    [Required]
+    [EmailAddress]
+    [Column("email")]
+    public string Email { get; set; }
+
+    [Required]
+    [Column("contact_info")]
+    public string ContactInfo { get; set; }
+
+    [Column("is_delete")]
+    public bool IsDelete { get; set; }
 }
