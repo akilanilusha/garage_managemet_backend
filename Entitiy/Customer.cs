@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace garage_managemet_backend_api.Models;
 
-[Table("customer")]
+[Table("Customer")]
 public class Customer
 {
     [Key]
@@ -22,8 +22,8 @@ public class Customer
 
     [Required]
     [Column("contact_info")]
-    public string ContactInfo { get; set; } 
+    public string ContactInfo { get; set; }
 
     [Column("is_delete")]
-    public bool IsDelete { get; set; } 
+    public bool IsDelete { get; set; }
 }

@@ -105,7 +105,7 @@ namespace garage_managemet_backend_api.controller
             if (vehicle == null)
                 return NotFound($"Vehicle with ID {id} not found.");
 
-            var customerExists = await _context.Customer.AnyAsync(c => c.CustomerID == dto.CustomerID);
+            var customerExists = await _context.Customer.AnyAsync(c => c.Id == dto.CustomerID);
             if (!customerExists)
                 return NotFound($"Customer with ID {dto.CustomerID} not found.");
 
