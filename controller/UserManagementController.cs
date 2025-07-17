@@ -79,18 +79,42 @@ public class UserManagementController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUsers(int id)
-    {
-        var user = awit _context.Appointment.FindAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
-        return Ok(new { deleteUserId = UserManagementController.Id });
-    }
+    //[HttpDelete("{id}")]
+    //public async Task<IActionResult> DeleteUsers(int id)
+    //{
+    //    var user = awit _context.Appointment.FindAsync(id);
+    //    if (user == null)
+    //    {
+    //        return NotFound();
+    //    }
+    //    _context.Users.Remove(user);
+    //    await _context.SaveChangesAsync();
+    //    return Ok(new { deleteUserId = UserManagementController.Id });
+    //}
+
+    //[HttpGet]
+    //public async Task<ActionResult<IEnumerable<User>>> SearchUsers(string searchTerm)
+    //{
+    //    if (string.IsNullOrEmpty(searchTerm))
+    //    {
+    //        return BadRequest("Search term cannot be null or empty.");
+    //    }
+    //    var users = await _context.Users
+    //        .Where(u => u.UserName.Contains(searchTerm) || u.Role.Contains(searchTerm))
+    //        .ToListAsync();
+    //    if (users.Count == 0)
+    //    {
+    //        return NotFound("No users found matching the search term.");
+    //    }
+    //    return Ok(users);
+    //}
+
+    //[HttpGet]
+    //public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+    //{
+    //    var users = await _context.Users.ToListAsync();
+    //    return Ok(users);
+    //}
 
     public bool UserExists(int id)
     {
