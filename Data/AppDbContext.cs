@@ -1,5 +1,5 @@
 using System;
-using garage_managemet_backend_api.Entitiy;
+//using garage_managemet_backend_api.Entitiy;
 using garage_managemet_backend_api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,5 +13,5 @@ public class AppDbContext : DbContext
     public DbSet<Appointment> Appointment { get; set; }
     public DbSet<Vehicle> Vehicles{ get; set; }
     public DbSet<Customer> Customer{ get; set; }
-    public DbSet<Supplier> Supplier{ get; set; }
+    public DbSet<Supplier> Suppliers{ get; set; }
 }
