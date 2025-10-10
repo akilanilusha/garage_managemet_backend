@@ -10,4 +10,8 @@ public class Customer
     public required string name { get; set; }
     public required string phone { get; set; }
     public required string email { get; set; }
+
+    [Column("is_delete")]
+    public bool IsDelete { get; set; } = false;
+
 }
