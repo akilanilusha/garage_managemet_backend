@@ -1,124 +1,103 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using garage_managemet_backend_api.Data;
-using garage_managemet_backend_api.Services;
 using garage_managemet_backend_api.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
-namespace garage_managemet_backend_api.controller;
-[Route("api/[controller]")]
-[ApiController]
-[Authorize]
-
-public class UserManagementController : ControllerBase
+namespace garage_managemet_backend_api.controller
 {
-    private readonly AppDbContext _context;
-
-
-
-
-    public UserManagementController(AppDbContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class UserManagementController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-    {
-        var users = await _context.Users.ToListAsync();
-        return Ok(users);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
-    {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
+        public UserManagementController(AppDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
-        return Ok(user);
-    }
 
-    [HttpPost]
-    public async Task<ActionResult<User>> CreateUser(User user)
-    {
-        if (!ModelState.IsValid)
+        // ✅ GET: api/usermanagement
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return BadRequest(ModelState);
+            var users = await _context.Users.ToListAsync();
+            return Ok(users);
         }
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-    }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, User user)
-    {
-        if (id != user.Id || !ModelState.IsValid)
+
+        // ✅ GET: api/usermanagement/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(int id)
         {
-            return BadRequest(ModelState);
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound($"User with ID {id} not found.");
+
+            return Ok(user);
         }
-        _context.Entry(user).State = EntityState.Modified;
-        try
+
+        // ✅ POST: api/usermanagement
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
-        catch (DbUpdateConcurrencyException)
+
+        // ✅ PUT: api/usermanagement/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
         {
-            if (!UserExists(id))
+            if (id != user.Id)
+                return BadRequest("User ID mismatch.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateConcurrencyException)
             {
-                throw;
+                if (!UserExists(id))
+                    return NotFound($"User with ID {id} not found.");
+                else
+                    throw;
             }
+
+            return Ok(user);
         }
-        return NoContent();
+
+        // ✅ DELETE: api/usermanagement/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound($"User with ID {id} not found.");
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { deletedUserId = id });
+        }
+
+        // ✅ Helper method to check existence
+        private bool UserExists(int id)
+        {
+            return _context.Users.Any(e => e.Id == id);
+        }
     }
-
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteUsers(int id)
-    //{
-    //    var user = awit _context.Appointment.FindAsync(id);
-    //    if (user == null)
-    //    {
-    //        return NotFound();
-    //    }
-    //    _context.Users.Remove(user);
-    //    await _context.SaveChangesAsync();
-    //    return Ok(new { deleteUserId = UserManagementController.Id });
-    //}
-
-    //[HttpGet]
-    //public async Task<ActionResult<IEnumerable<User>>> SearchUsers(string searchTerm)
-    //{
-    //    if (string.IsNullOrEmpty(searchTerm))
-    //    {
-    //        return BadRequest("Search term cannot be null or empty.");
-    //    }
-    //    var users = await _context.Users
-    //        .Where(u => u.UserName.Contains(searchTerm) || u.Role.Contains(searchTerm))
-    //        .ToListAsync();
-    //    if (users.Count == 0)
-    //    {
-    //        return NotFound("No users found matching the search term.");
-    //    }
-    //    return Ok(users);
-    //}
-
-    //[HttpGet]
-    //public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
-    //{
-    //    var users = await _context.Users.ToListAsync();
-    //    return Ok(users);
-    //}
-
-    public bool UserExists(int id)
-    {
-        return _context.Users.Any(e => e.Id == id);
-    }
-
 }
