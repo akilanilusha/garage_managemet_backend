@@ -10,4 +10,6 @@ public class Customer
     public required string name { get; set; }
     public required string phone { get; set; }
     public required string email { get; set; }
+    public bool IsDelete { get; set; } = false;
+
 }
