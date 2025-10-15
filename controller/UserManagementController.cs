@@ -23,6 +23,7 @@ namespace garage_managemet_backend_api.controller
 
         // ✅ GET: api/usermanagement
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users.ToListAsync();
@@ -31,6 +32,7 @@ namespace garage_managemet_backend_api.controller
 
         // ✅ GET: api/usermanagement/{id}
         [HttpGet("{id}")]
+        
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -42,6 +44,7 @@ namespace garage_managemet_backend_api.controller
 
         // ✅ POST: api/usermanagement
         [HttpPost]
+       
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
@@ -55,6 +58,7 @@ namespace garage_managemet_backend_api.controller
 
         // ✅ PUT: api/usermanagement/{id}
         [HttpPut("{id}")]
+      
         public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
         {
             if (id != user.Id)
@@ -82,6 +86,7 @@ namespace garage_managemet_backend_api.controller
 
         // ✅ DELETE: api/usermanagement/{id}
         [HttpDelete("{id}")]
+       
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);

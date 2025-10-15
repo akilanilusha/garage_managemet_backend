@@ -1,12 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("Appointment")]
+namespace garage_managemet_backend_api.Models
+{
+    [Table("appointment")]
     public class Appointment
     {
         [Key]
-        [Column("AppointmentID")]
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int AppointmentID { get; set; }
 
         [Required]
         public int CustomerID { get; set; }
@@ -15,16 +18,24 @@ using System.ComponentModel.DataAnnotations.Schema;
         public int VehicleID { get; set; }
 
         [Required]
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
-        public TimeOnly Time { get; set; }
+        [StringLength(45)]
+        public string Time { get; set; }   // ✅ FIXED: was TimeSpan or TimeOnly
 
         [Required]
+        [StringLength(100)]
         public string ServiceType { get; set; }
 
+        [StringLength(200)]
         public string? Description { get; set; }
 
         [Required]
+        [StringLength(45)]
         public string Status { get; set; }
+
+        [Column("is_delete")]
+        public int IsDelete { get; set; } = 0;
     }
+}
