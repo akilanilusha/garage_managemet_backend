@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace YourNamespace.Models
-{
+namespace garage_managemet_backend_api.Models{
     [Table("Mechanic")]
     public class Mechanic
     {
