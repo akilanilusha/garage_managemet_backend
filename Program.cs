@@ -7,6 +7,8 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // DB connection (Azure SQL or local)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
@@ -42,6 +44,10 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.MapControllers();
+
+app.Urls.Add("http://0.0.0.0:5141");  
 
 // Enable Swagger
 app.UseSwagger();
