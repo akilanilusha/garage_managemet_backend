@@ -7,8 +7,6 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 // DB connection (Azure SQL or local)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
@@ -25,6 +23,7 @@ builder.Services.AddSwaggerGen();
 
 // Dependency injection
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<CostCalculatorService>(); 
 
 // JWT Authentication
 builder.Services.AddAuthentication("Bearer")
