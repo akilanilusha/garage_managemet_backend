@@ -32,7 +32,7 @@ namespace garage_managemet_backend_api.Controllers
             return Ok(appointments);
         }
 
-        //  GET all confiremed
+        
         [HttpGet("confirmed")]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetConfirmedAppointments()
         {
