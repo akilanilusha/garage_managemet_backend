@@ -21,12 +21,23 @@ namespace garage_managemet_backend_api.Controllers
             _context = context;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
             var appointments = await _context.Appointment
                 .Where(a => a.IsDelete == 0)
+                .ToListAsync();
+
+            return Ok(appointments);
+        }
+
+        //  GET all confiremed
+        [HttpGet("confirmed")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetConfirmedAppointments()
+        {
+            var appointments = await _context.Appointment
+                .Where(a => a.IsDelete == 0 && a.Status == "Confirmed")
                 .ToListAsync();
 
             return Ok(appointments);
@@ -44,6 +55,8 @@ namespace garage_managemet_backend_api.Controllers
 
             return Ok(appointment);
         }
+
+
 
         // ✅ CREATE
         [HttpPost]
