@@ -21,7 +21,7 @@ namespace garage_managemet_backend_api.Controllers
             _context = context;
         }
 
-        //  GET ALL
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {

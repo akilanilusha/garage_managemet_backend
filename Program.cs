@@ -14,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         new MariaDbServerVersion(new Version(10, 4, 14))  // Note: MariaDB version
     ));
 
-// Add controllers
+
 builder.Services.AddControllers();
 
 // Add Swagger
