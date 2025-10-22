@@ -21,7 +21,7 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        // ✅ GET: api/usermanagement
+        
         [HttpGet]
         
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
@@ -30,7 +30,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(users);
         }
 
-        // ✅ GET: api/usermanagement/{id}
+        
         [HttpGet("{id}")]
         
         public async Task<ActionResult<User>> GetUser(int id)
@@ -42,7 +42,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(user);
         }
 
-        // ✅ POST: api/usermanagement
+        
         [HttpPost]
        
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
@@ -56,7 +56,7 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        // ✅ PUT: api/usermanagement/{id}
+        
         [HttpPut("{id}")]
       
         public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
@@ -84,7 +84,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(user);
         }
 
-        // ✅ DELETE: api/usermanagement/{id}
+        
         [HttpDelete("{id}")]
        
         public async Task<IActionResult> DeleteUser(int id)
@@ -99,7 +99,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { deletedUserId = id });
         }
 
-        // ✅ Helper method to check existence
+        
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);

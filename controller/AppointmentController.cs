@@ -43,7 +43,7 @@ namespace garage_managemet_backend_api.Controllers
             return Ok(appointments);
         }
 
-        // ✅ GET BY ID
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
@@ -58,7 +58,7 @@ namespace garage_managemet_backend_api.Controllers
 
 
 
-        // ✅ CREATE
+        
         [HttpPost]
         public async Task<ActionResult<Appointment>> CreateAppointment([FromBody] Appointment appointment)
         {
@@ -73,7 +73,7 @@ namespace garage_managemet_backend_api.Controllers
             return CreatedAtAction(nameof(GetAppointment), new { id = appointment.AppointmentID }, appointment);
         }
 
-        // ✅ UPDATE
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAppointment(int id, [FromBody] Appointment appointment)
         {
@@ -108,7 +108,7 @@ namespace garage_managemet_backend_api.Controllers
             return NoContent();
         }
 
-        // ✅ SOFT DELETE (mark as deleted)
+        
         [HttpPatch("{id}/delete")]
         public async Task<IActionResult> SoftDeleteAppointment(int id)
         {
@@ -124,7 +124,7 @@ namespace garage_managemet_backend_api.Controllers
             return Ok(new { deletedAppointmentId = id });
         }
 
-        // ✅ HARD DELETE (optional)
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppointment(int id)
         {

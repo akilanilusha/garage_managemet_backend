@@ -10,7 +10,7 @@ namespace garage_managemet_backend_api.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] //  Require JWT token for access
+    [Authorize] 
     public class VehicleController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -20,7 +20,7 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        // GET: api/vehicle
+        
         [HttpGet]
 
         public async Task<ActionResult<IEnumerable<VehicleReciveDTO>>> GetVehicles()
@@ -40,7 +40,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(vehicles);
         }
 
-        // GET: api/vehicle/{id}
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<VehicleReciveDTO>> GetVehicle(int id)
         {
@@ -62,7 +62,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(vehicle);
         }
 
-        // POST: api/vehicle
+        
         [HttpPost]
         public async Task<ActionResult<VehicleAddUpdateDTO>> CreateVehicle(VehicleAddUpdateDTO vehicleDto)
         {
@@ -96,7 +96,7 @@ namespace garage_managemet_backend_api.controller
 
         }
 
-        // PUT: api/vehicle/{id}
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateVehicle(int id, [FromBody] VehicleAddUpdateDTO dto)
         {
@@ -109,7 +109,7 @@ namespace garage_managemet_backend_api.controller
             if (!customerExists)
                 return NotFound($"Customer with ID {dto.CustomerID} not found.");
 
-            // Update the existing vehicle
+            
             vehicle.LicensePlate = dto.LicensePlate;
             vehicle.Make = dto.Make;
             vehicle.Model = dto.Model;
@@ -122,7 +122,7 @@ namespace garage_managemet_backend_api.controller
         }
 
 
-        // DELETE: api/vehicle/{id}/delete
+        
         [HttpPatch("{id}/delete")]
         public async Task<IActionResult> DeleteVehicle(int id, [FromBody] VehicleDeleteDTO dto)
         {

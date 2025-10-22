@@ -21,7 +21,7 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        // ✅ GET: api/Service
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
         {
@@ -32,7 +32,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(services);
         }
 
-        // ✅ GET: api/Service/{id}
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetServiceById(int id)
         {
@@ -44,7 +44,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(service);
         }
 
-        // ✅ POST: api/Service
+        
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(Service record)
         {
@@ -77,7 +77,7 @@ namespace garage_managemet_backend_api.controller
             }
         }
 
-        // ✅ PUT: api/Service/{id}
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateService(int id, Service record)
         {
@@ -111,7 +111,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service updated successfully." });
         }
 
-        // ✅ DELETE: api/Service/{id}
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteService(int id)
         {
@@ -125,11 +125,10 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service deleted successfully." });
         }
 
-        // =====================================================================
+        
         // 🔹 SERVICE ITEM CRUD SECTION
-        // =====================================================================
-
-        // ✅ GET: api/Service/items
+        
+        
         [HttpGet("items")]
         public async Task<ActionResult<IEnumerable<ServiceItem>>> GetAllServiceItems()
         {
@@ -137,7 +136,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(items);
         }
 
-        // ✅ GET: api/Service/items/{id}
+        
         [HttpGet("items/{id}")]
         public async Task<ActionResult<ServiceItem>> GetServiceItemById(int id)
         {
@@ -148,22 +147,19 @@ namespace garage_managemet_backend_api.controller
             return Ok(item);
         }
 
-        // ✅ POST: api/Service/items
+        
         [HttpPost("items")]
         public async Task<ActionResult<ServiceItem>> CreateServiceItem(ServiceItem item)
         {
             if (item == null)
                 return BadRequest(new { message = "Invalid service item data." });
 
-            // Validate that the related service exists
+        
             var serviceExists = await _context.Service.AnyAsync(s => s.ServiceID == item.ServiceId && !s.IsDelete);
             if (!serviceExists)
                 return BadRequest(new { message = "Invalid ServiceID — service not found." });
 
-            // Optionally validate part_id if you have a Parts table
-            // var partExists = await _context.Parts.AnyAsync(p => p.PartID == item.PartId);
-            // if (!partExists)
-            //     return BadRequest(new { message = "Invalid PartID — part not found." });
+            
 
             _context.ServiceItems.Add(item);
             await _context.SaveChangesAsync();
@@ -171,7 +167,7 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetServiceItemById), new { id = item.Id }, item);
         }
 
-        // ✅ PUT: api/Service/items/{id}
+        
         [HttpPut("items/{id}")]
         public async Task<IActionResult> UpdateServiceItem(int id, ServiceItem item)
         {
@@ -190,7 +186,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service item updated successfully." });
         }
 
-        // ✅ DELETE: api/Service/items/{id}
+        
         [HttpDelete("items/{id}")]
         public async Task<IActionResult> DeleteServiceItem(int id)
         {

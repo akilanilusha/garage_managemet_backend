@@ -10,7 +10,7 @@ namespace garage_managemet_backend_api.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Require JWT token
+    [Authorize] 
     public class CustomerController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -20,7 +20,7 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        // GET: api/customer
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
@@ -30,7 +30,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(customers);
         }
 
-        // GET: api/customer/{id}
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
@@ -44,11 +44,11 @@ namespace garage_managemet_backend_api.controller
             return Ok(customer);
         }
 
-        // POST: api/customer
+        
         [HttpPost]
         public async Task<ActionResult<Customer>> CreateCustomer([FromBody] Customer customer)
         {
-            // Check if email already exists among active customers
+            
             var existingCustomer = await _context.Customer
                 .FirstOrDefaultAsync(c => c.email == customer.email && c.IsDelete == false);
 
@@ -61,7 +61,7 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetCustomer), new { id = customer.CustomerID }, customer);
         }
 
-        // PUT: api/customer/{id}
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCustomer(int id, [FromBody] Customer updatedCustomer)
         {
@@ -79,7 +79,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(customer);
         }
 
-        // PATCH: api/customer/{id}/delete
+        
         [HttpPatch("{id}/delete")]
         public async Task<IActionResult> DeleteCustomer(int id, [FromBody] bool isDelete)
         {

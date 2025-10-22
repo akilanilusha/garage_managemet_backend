@@ -9,7 +9,7 @@ namespace garage_managemet_backend_api.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // You can remove this if you want open access
+    [Authorize] 
     public class MechanicController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -19,7 +19,7 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        // GET: api/Mechanic
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mechanic>>> GetAllMechanics()
         {
@@ -30,7 +30,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(mechanics);
         }
 
-        // ✅ GET: api/Mechanic/{id}
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Mechanic>> GetMechanicById(int id)
         {
@@ -41,7 +41,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(mechanic);
         }
 
-        // ✅ POST: api/Mechanic
+        
         [HttpPost]
         public async Task<ActionResult<Mechanic>> CreateMechanic(Mechanic mechanic)
         {
@@ -59,7 +59,7 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetMechanicById), new { id = mechanic.MechanicID }, mechanic);
         }
 
-        // ✅ PUT: api/Mechanic/{id}
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMechanic(int id, Mechanic mechanic)
         {
@@ -75,7 +75,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Mechanic updated successfully." });
         }
 
-        // ✅ DELETE (soft): api/Mechanic/{id}
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMechanic(int id)
         {
@@ -89,7 +89,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Mechanic deleted successfully." });
         }
 
-        // ✅ SEARCH: api/Mechanic/search?query=someText
+        
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Mechanic>>> SearchMechanic([FromQuery] string query)
         {
