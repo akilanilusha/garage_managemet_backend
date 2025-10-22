@@ -20,7 +20,6 @@ namespace garage_managemet_backend_api.controller
 
             Console.WriteLine($"Slot1: {status.Slot1}, Slot2: {status.Slot2}");
 
-            // TODO: Save to database or process further
 
             return Ok(new { message = "Data received" });
         }
