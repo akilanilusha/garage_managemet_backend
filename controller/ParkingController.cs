@@ -11,8 +11,7 @@ namespace garage_managemet_backend_api.controller
     public class ParkingController : ControllerBase
     {
         [HttpPost]
-        [AllowAnonymous]  // <-- Allow unauthenticated requests
-
+        [AllowAnonymous]  
         public IActionResult Post([FromBody] ParkingStatus status)
         {
             if (status == null)
