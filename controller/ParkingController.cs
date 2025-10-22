@@ -11,17 +11,14 @@ namespace garage_managemet_backend_api.controller
     public class ParkingController : ControllerBase
     {
         [HttpPost]
-        [AllowAnonymous]  // <-- Allow unauthenticated requests
-
+        [AllowAnonymous]  
         public IActionResult Post([FromBody] ParkingStatus status)
         {
             if (status == null)
                 return BadRequest("Invalid data");
 
-            // Print received data to console for testing
             Console.WriteLine($"Slot1: {status.Slot1}, Slot2: {status.Slot2}");
 
-            // TODO: Save to database or process further
 
             return Ok(new { message = "Data received" });
         }
