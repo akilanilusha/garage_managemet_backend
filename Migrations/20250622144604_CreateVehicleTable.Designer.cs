@@ -14,7 +14,7 @@ namespace garage_managemet_backend_api.Migrations
     [Migration("20250622144604_CreateVehicleTable")]
     partial class CreateVehicleTable
     {
-        /// <inheritdoc />
+        
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

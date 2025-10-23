@@ -25,9 +25,9 @@ public class TokenService
             new Claim(ClaimTypes.Role, user.Role)
         };
 
-#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8604 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8604 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

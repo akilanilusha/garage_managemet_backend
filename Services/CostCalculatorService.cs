@@ -20,7 +20,7 @@ public class CostCalculatorService
     {
         IService service = new BasicService();
 
-        // Add-ons (service decorators)
+        
         if (request.SelectedItems != null)
         {
             foreach (var addon in request.SelectedItems)
@@ -33,7 +33,7 @@ public class CostCalculatorService
             }
         }
 
-        // Parts (from database)
+        
         if (request.Parts != null && request.Parts.Count > 0)
         {
             var partIds = request.Parts.Select(p => p.PartID).ToList();
