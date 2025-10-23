@@ -15,5 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Mechanic> Mechanic { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<ServiceItem> ServiceItems { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+
 
 }
