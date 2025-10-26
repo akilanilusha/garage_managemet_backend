@@ -17,7 +17,7 @@ namespace garage_managemet_backend_api.controller
             if (status == null)
                 return BadRequest("Invalid data");
 
-            // Store latest status
+            
             _latestStatus = status;
 
             Console.WriteLine($"Received: Slot1={status.Slot1}, Slot2={status.Slot2}");
