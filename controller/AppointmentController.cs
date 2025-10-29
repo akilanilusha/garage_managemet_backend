@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using garage_managemet_backend_api.Data;
+using garage_managemet_backend_api.Entitiy;
 using garage_managemet_backend_api.Models;
 
 namespace garage_managemet_backend_api.Controllers
@@ -23,16 +24,67 @@ namespace garage_managemet_backend_api.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
+        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointments()
         {
-            var appointments = await _context.Appointment
-                .Where(a => a.IsDelete == 0)
-                .ToListAsync();
+            var connection = _context.Database.GetDbConnection();
+            var appointments = new List<AppointmentDto>();
+
+            try
+            {
+                await connection.OpenAsync();
+                using var command = connection.CreateCommand();
+
+                command.CommandText = @"
+            SELECT 
+                a.AppointmentID,
+                a.CustomerID,
+                c.name AS CustomerName,
+                a.VehicleID,
+                v.LicensePlate AS VehicleName,
+                a.Date,
+                a.Time,
+                a.ServiceType,
+                a.Description,
+                a.Status,
+                a.is_delete AS IsDelete
+            FROM Appointment a
+            INNER JOIN Customer c ON a.CustomerID = c.CustomerID
+            INNER JOIN Vehicles v ON a.VehicleID = v.VehicleID
+            WHERE a.is_delete = 0;";
+
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var dto = new AppointmentDto
+                    {
+                        AppointmentID = reader.GetInt32(reader.GetOrdinal("AppointmentID")),
+                        CustomerID = reader.GetInt32(reader.GetOrdinal("CustomerID")),
+                        CustomerName = reader.GetString(reader.GetOrdinal("CustomerName")),
+                        VehicleID = reader.GetInt32(reader.GetOrdinal("VehicleID")),
+                        VehicleName = reader.GetString(reader.GetOrdinal("VehicleName")),
+                        Date = reader.GetDateTime(reader.GetOrdinal("Date")),
+                        Time = reader.IsDBNull(reader.GetOrdinal("Time")) ? null : reader.GetString(reader.GetOrdinal("Time")),
+                        ServiceType = reader.IsDBNull(reader.GetOrdinal("ServiceType")) ? null : reader.GetString(reader.GetOrdinal("ServiceType")),
+                        Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                        Status = reader.IsDBNull(reader.GetOrdinal("Status")) ? null : reader.GetString(reader.GetOrdinal("Status")),
+                        IsDelete = reader.GetInt32(reader.GetOrdinal("IsDelete"))
+                    };
+
+                    appointments.Add(dto);
+                }
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
 
             return Ok(appointments);
         }
 
-        
+
+
+
+
         [HttpGet("confirmed")]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetConfirmedAppointments()
         {
@@ -43,7 +95,7 @@ namespace garage_managemet_backend_api.Controllers
             return Ok(appointments);
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
@@ -58,7 +110,7 @@ namespace garage_managemet_backend_api.Controllers
 
 
 
-        
+
         [HttpPost]
         public async Task<ActionResult<Appointment>> CreateAppointment([FromBody] Appointment appointment)
         {
@@ -73,7 +125,7 @@ namespace garage_managemet_backend_api.Controllers
             return CreatedAtAction(nameof(GetAppointment), new { id = appointment.AppointmentID }, appointment);
         }
 
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAppointment(int id, [FromBody] Appointment appointment)
         {
@@ -108,7 +160,7 @@ namespace garage_managemet_backend_api.Controllers
             return NoContent();
         }
 
-        
+
         [HttpPatch("{id}/delete")]
         public async Task<IActionResult> SoftDeleteAppointment(int id)
         {
@@ -124,7 +176,7 @@ namespace garage_managemet_backend_api.Controllers
             return Ok(new { deletedAppointmentId = id });
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppointment(int id)
         {

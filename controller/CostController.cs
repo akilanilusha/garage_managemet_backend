@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using garage_managemet_backend_api.Services;
 using garage_managemet_backend_api.Models;
+using garage_managemet_backend_api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace garage_managemet_backend_api.controller;
 
@@ -28,4 +28,3 @@ public class CostController : ControllerBase
         return Ok(result);
     }
 }
-
