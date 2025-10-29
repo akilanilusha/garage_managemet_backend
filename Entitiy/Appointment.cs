@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using garage_managemet_backend_api.Entitiy;
 
 namespace garage_managemet_backend_api.Models
 {
@@ -37,5 +38,8 @@ namespace garage_managemet_backend_api.Models
 
         [Column("is_delete")]
         public int IsDelete { get; set; } = 0;
+
+         public Customer? Customer { get; set; }
+        public Vehicle? Vehicle { get; set; }
     }
 }

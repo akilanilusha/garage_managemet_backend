@@ -16,7 +16,6 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
@@ -26,7 +25,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(items);
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Item>> GetItem(int id)
         {
@@ -38,7 +37,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(item);
         }
 
-        
+
         [HttpPost]
         public async Task<ActionResult<Item>> CreateItem(Item item)
         {
@@ -48,7 +47,7 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetItem), new { id = item.ItemID }, item);
         }
 
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int id, Item updatedItem)
         {
@@ -70,7 +69,7 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Item updated successfully" });
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
@@ -78,14 +77,14 @@ namespace garage_managemet_backend_api.controller
             if (item == null)
                 return NotFound(new { message = "Item not found" });
 
-            
+
             item.IsDelete = true;
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Item deleted successfully" });
         }
 
-        
+
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Item>>> SearchItemByName(string name)
         {
