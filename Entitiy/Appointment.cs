@@ -23,7 +23,7 @@ namespace garage_managemet_backend_api.Models
 
         [Required]
         [StringLength(45)]
-        public string Time { get; set; }   // ✅ FIXED: was TimeSpan or TimeOnly
+        public string Time { get; set; }   
 
         [Required]
         [StringLength(100)]

@@ -132,8 +132,15 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service deleted successfully." });
         }
 
+<<<<<<< HEAD
         // 🔹 SERVICE ITEM CRUD SECTION
 
+=======
+        
+       
+        
+        
+>>>>>>> a78b2cdafb26377386b6386c279f90ca331bf726
         [HttpGet("items")]
         public async Task<ActionResult<IEnumerable<ServiceItem>>> GetAllServiceItems()
         {

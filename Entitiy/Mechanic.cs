@@ -7,17 +7,17 @@ namespace garage_managemet_backend_api.Models{
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MechanicID { get; set; }  // Primary key, auto-incremented
+        public int MechanicID { get; set; }  
 
         [Required]
         public string name { get; set; }
 
         [Required]
-        public string nic_number { get; set; }  // National ID
+        public string nic_number { get; set; }  
 
         [Required]
         public string phone { get; set; }
 
-        public bool is_delete { get; set; } = false;  // Soft delete
+        public bool is_delete { get; set; } = false;  
     }
 }
