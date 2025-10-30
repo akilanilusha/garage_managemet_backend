@@ -32,11 +32,7 @@ namespace garage_managemet_backend_api.controller
             if (_latestStatus == null)
                 return NotFound(new { message = "No status data available yet" });
 
-            return Ok(new
-            {
-                message = "Latest parking status",
-                data = _latestStatus
-            });
+            return Ok(new { message = "Latest parking status", data = _latestStatus });
         }
 
         [HttpGet("test")]

@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using garage_managemet_backend_api.Data;
 using garage_managemet_backend_api.Entitiy;
+using garage_managemet_backend_api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
-using garage_managemet_backend_api.Models;
 
 namespace garage_managemet_backend_api.controller
 {
@@ -21,18 +21,14 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Service>>> GetAllServices()
         {
-            var services = await _context.Service
-                .Where(s => s.IsDelete == false)
-                .ToListAsync();
+            var services = await _context.Service.Where(s => s.IsDelete == false).ToListAsync();
 
             return Ok(services);
         }
 
-        
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetServiceById(int id)
         {
@@ -44,7 +40,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(service);
         }
 
-        
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(Service record)
         {
@@ -55,11 +50,15 @@ namespace garage_managemet_backend_api.controller
             if (!vehicleExists)
                 return BadRequest(new { message = "VehicleID does not exist." });
 
-            var customerExists = await _context.Appointment.AnyAsync(a => a.AppointmentID == record.AppointmentID);
+            var customerExists = await _context.Appointment.AnyAsync(a =>
+                a.AppointmentID == record.AppointmentID
+            );
             if (!customerExists)
                 return BadRequest(new { message = "Appointment does not exist." });
 
-            var mechanicExists = await _context.Mechanic.AnyAsync(m => m.MechanicID == record.MechanicID);
+            var mechanicExists = await _context.Mechanic.AnyAsync(m =>
+                m.MechanicID == record.MechanicID
+            );
             if (!mechanicExists)
                 return BadRequest(new { message = "MechanicID does not exist." });
 
@@ -69,15 +68,20 @@ namespace garage_managemet_backend_api.controller
                 _context.Service.Add(record);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetServiceById), new { id = record.ServiceID }, record);
+                return CreatedAtAction(
+                    nameof(GetServiceById),
+                    new { id = record.ServiceID },
+                    record
+                );
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Failed to create service.", error = ex.Message });
+                return BadRequest(
+                    new { message = "Failed to create service.", error = ex.Message }
+                );
             }
         }
 
-        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateService(int id, Service record)
         {
@@ -89,11 +93,15 @@ namespace garage_managemet_backend_api.controller
             if (!vehicleExists)
                 return BadRequest(new { message = "VehicleID does not exist." });
 
-            var appointmentExists = await _context.Appointment.AnyAsync(a => a.AppointmentID == record.AppointmentID);
+            var appointmentExists = await _context.Appointment.AnyAsync(a =>
+                a.AppointmentID == record.AppointmentID
+            );
             if (!appointmentExists)
                 return BadRequest(new { message = "AppointmentID does not exist." });
 
-            var mechanicExists = await _context.Mechanic.AnyAsync(m => m.MechanicID == record.MechanicID);
+            var mechanicExists = await _context.Mechanic.AnyAsync(m =>
+                m.MechanicID == record.MechanicID
+            );
             if (!mechanicExists)
                 return BadRequest(new { message = "MechanicID does not exist." });
 
@@ -111,7 +119,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service updated successfully." });
         }
 
-        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteService(int id)
         {
@@ -125,10 +132,15 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service deleted successfully." });
         }
 
+<<<<<<< HEAD
+        // 🔹 SERVICE ITEM CRUD SECTION
+
+=======
         
        
         
         
+>>>>>>> a78b2cdafb26377386b6386c279f90ca331bf726
         [HttpGet("items")]
         public async Task<ActionResult<IEnumerable<ServiceItem>>> GetAllServiceItems()
         {
@@ -136,7 +148,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(items);
         }
 
-        
         [HttpGet("items/{id}")]
         public async Task<ActionResult<ServiceItem>> GetServiceItemById(int id)
         {
@@ -147,19 +158,17 @@ namespace garage_managemet_backend_api.controller
             return Ok(item);
         }
 
-        
         [HttpPost("items")]
         public async Task<ActionResult<ServiceItem>> CreateServiceItem(ServiceItem item)
         {
             if (item == null)
                 return BadRequest(new { message = "Invalid service item data." });
 
-        
-            var serviceExists = await _context.Service.AnyAsync(s => s.ServiceID == item.ServiceId && !s.IsDelete);
+            var serviceExists = await _context.Service.AnyAsync(s =>
+                s.ServiceID == item.ServiceId && !s.IsDelete
+            );
             if (!serviceExists)
                 return BadRequest(new { message = "Invalid ServiceID — service not found." });
-
-            
 
             _context.ServiceItems.Add(item);
             await _context.SaveChangesAsync();
@@ -167,7 +176,6 @@ namespace garage_managemet_backend_api.controller
             return CreatedAtAction(nameof(GetServiceItemById), new { id = item.Id }, item);
         }
 
-        
         [HttpPut("items/{id}")]
         public async Task<IActionResult> UpdateServiceItem(int id, ServiceItem item)
         {
@@ -186,7 +194,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Service item updated successfully." });
         }
 
-        
         [HttpDelete("items/{id}")]
         public async Task<IActionResult> DeleteServiceItem(int id)
         {

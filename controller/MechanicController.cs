@@ -9,7 +9,7 @@ namespace garage_managemet_backend_api.controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] 
+    [Authorize]
     public class MechanicController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -19,18 +19,14 @@ namespace garage_managemet_backend_api.controller
             _context = context;
         }
 
-        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mechanic>>> GetAllMechanics()
         {
-            var mechanics = await _context.Mechanic
-                .Where(m => m.is_delete == false)
-                .ToListAsync();
+            var mechanics = await _context.Mechanic.Where(m => m.is_delete == false).ToListAsync();
 
             return Ok(mechanics);
         }
 
-        
         [HttpGet("{id}")]
         public async Task<ActionResult<Mechanic>> GetMechanicById(int id)
         {
@@ -41,7 +37,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(mechanic);
         }
 
-        
         [HttpPost]
         public async Task<ActionResult<Mechanic>> CreateMechanic(Mechanic mechanic)
         {
@@ -49,17 +44,22 @@ namespace garage_managemet_backend_api.controller
                 return BadRequest(new { message = "Invalid mechanic data." });
 
             // Check if NIC already exists
-            var existingNIC = await _context.Mechanic.AnyAsync(m => m.nic_number == mechanic.nic_number && m.is_delete == false);
+            var existingNIC = await _context.Mechanic.AnyAsync(m =>
+                m.nic_number == mechanic.nic_number && m.is_delete == false
+            );
             if (existingNIC)
                 return BadRequest(new { message = "NIC number already exists." });
 
             _context.Mechanic.Add(mechanic);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetMechanicById), new { id = mechanic.MechanicID }, mechanic);
+            return CreatedAtAction(
+                nameof(GetMechanicById),
+                new { id = mechanic.MechanicID },
+                mechanic
+            );
         }
 
-        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMechanic(int id, Mechanic mechanic)
         {
@@ -75,7 +75,6 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Mechanic updated successfully." });
         }
 
-        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMechanic(int id)
         {
@@ -89,17 +88,18 @@ namespace garage_managemet_backend_api.controller
             return Ok(new { message = "Mechanic deleted successfully." });
         }
 
-        
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Mechanic>>> SearchMechanic([FromQuery] string query)
+        public async Task<ActionResult<IEnumerable<Mechanic>>> SearchMechanic(
+            [FromQuery] string query
+        )
         {
             if (string.IsNullOrWhiteSpace(query))
                 return BadRequest(new { message = "Search query cannot be empty." });
 
-            var mechanics = await _context.Mechanic
-                .Where(m => !m.is_delete &&
-                            (m.name.Contains(query) ||
-                             m.nic_number.Contains(query)))
+            var mechanics = await _context
+                .Mechanic.Where(m =>
+                    !m.is_delete && (m.name.Contains(query) || m.nic_number.Contains(query))
+                )
                 .ToListAsync();
 
             if (mechanics.Count == 0)
