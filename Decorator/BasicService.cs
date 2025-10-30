@@ -1,16 +1,26 @@
 using System;
 
-namespace garage_managemet_backend_api.Decorator;
-
-public class BasicService: IService
+namespace garage_managemet_backend_api.Decorator
 {
- public string GetDescription()
+    public class BasicService : IService
     {
-        return "Basic Maintenance Service";
-    }
+        private readonly string _description;
+        private readonly decimal _cost;
 
-    public decimal GetCost()
-    {
-        return 5000;
+        public BasicService(string description, decimal cost)
+        {
+            _description = description;
+            _cost = cost;
+        }
+
+        public string GetDescription()
+        {
+            return _description;
+        }
+
+        public decimal GetCost()
+        {
+            return _cost;
+        }
     }
 }
